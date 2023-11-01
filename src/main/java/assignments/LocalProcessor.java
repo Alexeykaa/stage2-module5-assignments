@@ -25,6 +25,8 @@ public class LocalProcessor {
     public LocalProcessor() {
         period = 10_000_000_000_000L;
         stringArrayList = new ArrayList<>();
+        processorName = "";
+        processorVersion = "";
     }
 
     public LocalProcessor(String processorName, Long period, String processorVersion, Integer valueOfCheap,
