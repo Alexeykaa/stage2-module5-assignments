@@ -15,25 +15,21 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LocalProcessor {
-    private String processorName;
-    private Long period;
-    private String processorVersion;
+    private StringBuilder processorName;
+    private Long period = 10_000_000_000_000L;
+    private StringBuilder processorVersion;
     private Integer valueOfCheap;
     private Scanner informationScanner;
-    private List<String> stringArrayList;
+    private List<String> stringArrayList = new ArrayList<>();
 
     public LocalProcessor() {
-        period = 10_000_000_000_000L;
-        stringArrayList = new ArrayList<>();
-        processorName = "";
-        processorVersion = "";
     }
 
     public LocalProcessor(String processorName, Long period, String processorVersion, Integer valueOfCheap,
                           Scanner informationScanner, List<String> stringArrayList) {
-        this.processorName = processorName;
+        this.processorName = new StringBuilder(processorName);
         this.period = period;
-        this.processorVersion = processorVersion;
+        this.processorVersion = new StringBuilder(processorVersion);
         this.valueOfCheap = valueOfCheap;
         this.informationScanner = informationScanner;
         this.stringArrayList = new ArrayList<>(stringArrayList);
@@ -52,22 +48,18 @@ public class LocalProcessor {
 
     @FullNameProcessorGeneratorAnnotation
     public String generateProcessorFullName(List<String> stringList) {
-        StringBuilder result = new StringBuilder(processorName);
         for (String s : stringList) {
-            result.append(s).append(' ');
+            processorName.append(s).append(' ');
         }
-        processorName = result.toString();
-        return processorName;
+        return processorName.toString();
     }
 
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) throws FileNotFoundException {
         try (Scanner scanner = new Scanner(file)) {
-            StringBuilder result = new StringBuilder(processorVersion);
             while (scanner.hasNext()) {
-                result.append(scanner.nextLine());
+                processorVersion.append(scanner.nextLine());
             }
-            processorVersion = result.toString();
             informationScanner = scanner;
         }
     }
