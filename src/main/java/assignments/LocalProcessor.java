@@ -20,7 +20,7 @@ public class LocalProcessor {
     private String processorVersion;
     private Integer valueOfCheap;
     private Scanner informationScanner;
-    private ArrayList<String> stringArrayList;
+    private List<String> stringArrayList;
 
     public LocalProcessor() {
         period = 10_000_000_000_000L;
@@ -41,7 +41,10 @@ public class LocalProcessor {
     public void iterateList(List<String> stringList) {
         stringArrayList = new ArrayList<>(stringList);
         for (int i = 0; i < period && i < stringArrayList.size(); i++) {
-            System.out.println(stringArrayList.get(i).hashCode());
+            String s = stringArrayList.get(i);
+            if (s != null) {
+                System.out.println(s.hashCode());
+            }
         }
     }
 
@@ -49,7 +52,7 @@ public class LocalProcessor {
     public String generateProcessorFullName(List<String> stringList) {
         StringBuilder result = new StringBuilder(processorName);
         for (String s : stringList) {
-            result.append(' ').append(s);
+            result.append(s).append(' ');
         }
         processorName = result.toString();
         return processorName;
@@ -57,12 +60,13 @@ public class LocalProcessor {
 
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) throws FileNotFoundException {
-        try (Scanner informationScanner = new Scanner(file)) {
+        try (Scanner scanner = new Scanner(file)) {
             StringBuilder result = new StringBuilder(processorVersion);
-            while (informationScanner.hasNext()) {
-                result.append(informationScanner.nextLine());
+            while (scanner.hasNext()) {
+                result.append(scanner.nextLine());
             }
             processorVersion = result.toString();
+            informationScanner = scanner;
         }
     }
 }
